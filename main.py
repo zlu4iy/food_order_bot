@@ -1,25 +1,16 @@
 from loguru import logger as log
+from os import getenv
+
 import asyncio
 from aiogram import Bot, Dispatcher
-from aiogram.types import Message
-from aiogram.filters import CommandStart, Command
 
-
-bot = Bot(token='7036317929:AAG5Ha-y3xavzO_wl-Es0G4Hyp7Mr19G3v0')
-dp = Dispatcher()
-
-
-@dp.message(CommandStart())
-async def cmd_start(message: Message):
-    await message.answer('Привет обжора!')
-
-
-@dp.message(Command('help'))
-async def cmd_help(message: Message):
-    await message.answer('Нужна помощь? Неужто отравился?')
+from app.handlers import router
 
 
 async def main():
+    bot = Bot(token=getenv('food_order_bot'))
+    dp = Dispatcher()
+    dp.include_router(router)
     await dp.start_polling(bot)
 
 
